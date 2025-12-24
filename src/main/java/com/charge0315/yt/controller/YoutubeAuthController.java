@@ -1,0 +1,89 @@
+package com.charge0315.yt.controller;
+
+import java.time.Instant;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebSession;
+
+import com.charge0315.yt.service.GoogleOAuthService;
+
+import reactor.core.publisher.Mono;
+
+/**
+ * Frontend 互換の YouTube OAuth API.
+ *
+ * フロントは `GET /api/youtube/auth/url` → 認可URL取得、
+ * `POST /api/youtube/auth/callback` → code交換、
+ * `GET /api/youtube/auth/status` → 接続状態
+ * を呼ぶが、Spring側の実体は Google OAuth（/api/auth/google + callback）に寄せて実装する。
+ */
+@RestController
+@RequestMapping("/api/youtube/auth")
+public class YoutubeAuthController {
+
+    private final GoogleOAuthService googleOAuthService;
+
+    public YoutubeAuthController(GoogleOAuthService googleOAuthService) {
+        this.googleOAuthService = googleOAuthService;
+    }
+
+    @GetMapping("/url")
+    Mono<Map<String, Object>> getAuthUrl(ServerWebExchange exchange) {
+        return Mono.fromSupplier(() -> googleOAuthService.buildAuthorizationUri(exchange))
+            .map(uri -> Map.<String, Object>of("url", uri.toString()));
+    }
+
+    public record CallbackRequest(String code) {
+    }
+
+    @PostMapping("/callback")
+    Mono<Map<String, Object>> callback(
+            @RequestBody Mono<CallbackRequest> body,
+            ServerWebExchange exchange,
+            WebSession session) {
+        return body.flatMap(req -> {
+            String code = req != null ? req.code() : null;
+            if (code == null || code.isBlank()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "code_required");
+            }
+
+            return googleOAuthService
+                .exchangeCodeForTokens(exchange, code)
+                .flatMap(tokens -> googleOAuthService
+                    .fetchUserInfo(tokens.accessToken())
+                    .map(userInfo -> {
+                        session.getAttributes().put("userId", userInfo.id());
+                        session.getAttributes().put("email", userInfo.email());
+                        session.getAttributes().put("name", userInfo.name());
+                        session.getAttributes().put("picture", userInfo.picture());
+                        session.getAttributes().put("youtubeAccessToken", tokens.accessToken());
+                        session.getAttributes().put("youtubeRefreshToken", tokens.refreshToken());
+                        session.getAttributes().put("youtubeTokenExpiry", tokens.expiresAt());
+                        return Map.<String, Object>of("ok", true);
+                    }));
+        });
+    }
+
+    @GetMapping("/status")
+    Mono<Map<String, Object>> status(WebSession session) {
+        String accessToken = session.getAttribute("youtubeAccessToken");
+        Instant expiry = session.getAttribute("youtubeTokenExpiry");
+
+        boolean connected = accessToken != null && !accessToken.isBlank() && (expiry == null || expiry.isAfter(Instant.now()));
+
+        if (expiry != null) {
+            return Mono.just(Map.of(
+                "connected", connected,
+                "expiresAt", expiry.toString()));
+        }
+        return Mono.just(Map.of("connected", connected));
+    }
+}

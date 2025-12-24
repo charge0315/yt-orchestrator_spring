@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: yt-orchestrator-spring
+  data:
+    mongodb:
+      # Cloud (Atlas等) は MONGODB_URI 環境変数で指定
+      # 例: mongodb+srv://user:pass@cluster0.xxxxx.mongodb.net/yt?retryWrites=true&w=majority
+      uri: ${MONGODB_URI:mongodb://localhost:27017/yt}
+
+server:
+  port: 8080
