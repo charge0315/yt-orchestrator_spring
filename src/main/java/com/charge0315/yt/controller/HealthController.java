@@ -15,11 +15,17 @@ import reactor.core.publisher.Mono;
 @RestController
 public class HealthController {
 
+    /**
+     * トップページ用の簡易メッセージを返します。
+     */
     @GetMapping("/")
     Mono<String> home() {
         return Mono.just("yt-orchestrator (spring webflux) is running");
     }
 
+    /**
+     * ヘルスチェック（稼働確認）結果を返します。
+     */
     @GetMapping("/api/health")
     Mono<Map<String, Object>> health() {
         return Mono.just(Map.of(

@@ -34,6 +34,9 @@ public class YoutubeChannelsController {
         this.youTubeChannelsService = youTubeChannelsService;
     }
 
+    /**
+     * 登録済みYouTubeチャンネル一覧を返します。
+     */
     @GetMapping
     Mono<List<YouTubeChannelsService.YouTubeChannelEntry>> getAll(WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -41,6 +44,9 @@ public class YoutubeChannelsController {
         return youTubeChannelsService.getAll(userId, accessToken);
     }
 
+    /**
+     * YouTubeチャンネルを登録（購読）します。
+     */
     @PostMapping
     Mono<YouTubeChannelsService.YouTubeChannelEntry> subscribe(
             @RequestBody Mono<YouTubeChannelsService.SubscribeRequest> body,
@@ -50,6 +56,9 @@ public class YoutubeChannelsController {
         return body.flatMap(req -> youTubeChannelsService.subscribe(userId, accessToken, req));
     }
 
+    /**
+     * 登録済みYouTubeチャンネルを解除します。
+     */
     @DeleteMapping("/{id}")
     Mono<Void> unsubscribe(@PathVariable("id") String id, WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -59,6 +68,9 @@ public class YoutubeChannelsController {
         return youTubeChannelsService.unsubscribe(userId, id);
     }
 
+    /**
+     * 登録チャンネルの最新動画一覧を返します。
+     */
     @GetMapping("/latest-videos")
     Mono<List<YouTubeChannelsService.LatestVideo>> getLatestVideos(WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -69,6 +81,9 @@ public class YoutubeChannelsController {
     public record UpdateVideosRequest(List<YouTubeChannelsService.LatestVideo> latestVideos) {
     }
 
+    /**
+     * 最新動画情報（表示用キャッシュ）を更新します。
+     */
     @PostMapping("/{id}/update-videos")
     Mono<YouTubeChannelsService.YouTubeChannelEntry> updateVideos(
             @PathVariable("id") String id,

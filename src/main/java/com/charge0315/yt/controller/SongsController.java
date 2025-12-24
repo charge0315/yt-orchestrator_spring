@@ -33,6 +33,9 @@ public class SongsController {
         this.youTubeDataApiService = youTubeDataApiService;
     }
 
+    /**
+     * クエリで曲/動画を検索し、フロント互換の配列形式で返します。
+     */
     @GetMapping("/search")
     Mono<List<Map<String, Object>>> search(@RequestParam(name = "query", required = false) String query, WebSession session) {
         SessionAuth.requireUserId(session);

@@ -35,6 +35,9 @@ public class YtMusicController {
         this.youTubeDataApiService = youTubeDataApiService;
     }
 
+    /**
+     * YouTube Music連携状態（最小互換）を返します。
+     */
     @GetMapping("/auth/status")
     Mono<Map<String, Object>> authStatus(WebSession session) {
         SessionAuth.requireUserId(session);
@@ -43,6 +46,9 @@ public class YtMusicController {
                 "message", "YouTube Data API v3 を利用中のため、常に接続済みです"));
     }
 
+    /**
+     * プレイリスト一覧を返します（最小互換・Data API 直参照）。
+     */
     @GetMapping("/playlists")
     Mono<Map<String, Object>> playlists(
             @RequestParam(name = "refresh", required = false) String refresh,
@@ -58,6 +64,9 @@ public class YtMusicController {
                 "nextPageToken", r.nextPageToken()));
     }
 
+    /**
+     * 指定プレイリストの詳細（name/songs 等）を返します（最小互換）。
+     */
     @GetMapping("/playlists/{id}")
     Mono<ResponseEntity<Map<String, Object>>> playlistDetail(@PathVariable("id") String id, WebSession session) {
         SessionAuth.requireUserId(session);
@@ -106,6 +115,9 @@ public class YtMusicController {
             });
     }
 
+    /**
+     * クエリで動画を検索し、フロント互換の配列形式で返します。
+     */
     @GetMapping("/search")
     Mono<List<Map<String, Object>>> search(@RequestParam(name = "query", required = false) String query, WebSession session) {
         SessionAuth.requireUserId(session);

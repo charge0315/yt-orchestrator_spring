@@ -30,6 +30,9 @@ public class CacheRefreshService {
         this.youTubeDataApiService = youTubeDataApiService;
     }
 
+    /**
+     * 指定ユーザーのチャンネルキャッシュを更新し、チェック/更新件数を返します。
+     */
     public Mono<RefreshResult> refreshUserCache(String userId, String accessToken) {
         if (!StringUtils.hasText(accessToken)) {
             return Mono.just(new RefreshResult(false, "youtube_access_token_missing", 0, 0));

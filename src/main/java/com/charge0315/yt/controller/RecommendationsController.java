@@ -28,6 +28,9 @@ public class RecommendationsController {
         this.recommendationsService = recommendationsService;
     }
 
+    /**
+     * おすすめ（検索キーワード/チャンネル候補）を返します。
+     */
     @GetMapping
     Mono<List<RecommendationsService.RecommendationEntry>> list(WebSession session) {
         String userId = SessionAuth.requireUserId(session);

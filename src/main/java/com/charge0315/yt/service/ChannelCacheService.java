@@ -32,6 +32,9 @@ public class ChannelCacheService {
         this.cachedChannelRepository = cachedChannelRepository;
     }
 
+    /**
+     * 登録済みチャンネル一覧（isArtist=false）を取得します。
+     */
     public Mono<List<CachedChannelEntry>> listChannels(String userId) {
         return cachedChannelRepository
                 .findByUserIdAndIsArtistFalseOrderByChannelTitleAsc(userId)
@@ -39,6 +42,9 @@ public class ChannelCacheService {
                 .collectList();
     }
 
+    /**
+     * 登録済みアーティスト一覧（isArtist=true）を取得します。
+     */
     public Mono<List<CachedChannelEntry>> listArtists(String userId) {
         return cachedChannelRepository
                 .findByUserIdAndIsArtistTrueOrderByChannelTitleAsc(userId)
@@ -46,6 +52,9 @@ public class ChannelCacheService {
                 .collectList();
     }
 
+    /**
+     * チャンネルを登録（購読）し、保存済みエントリを返します。
+     */
     public Mono<CachedChannelEntry> subscribe(String userId, String accessToken, String channelId) {
         return cachedChannelRepository
                 .findFirstByUserIdAndChannelId(userId, channelId)
@@ -100,6 +109,9 @@ public class ChannelCacheService {
                 .map(ChannelCacheService::toEntry);
     }
 
+    /**
+     * チャンネル登録を解除します（subscriptionId または channelId で削除）。
+     */
     public Mono<Void> unsubscribe(String userId, String idOrChannelId) {
         // まず subscriptionId として削除を試す。なければ channelId として削除。
         return cachedChannelRepository
@@ -109,6 +121,9 @@ public class ChannelCacheService {
                         : cachedChannelRepository.deleteByUserIdAndChannelId(userId, idOrChannelId).then());
     }
 
+    /**
+     * アーティストフラグを channelId 指定で更新します。
+     */
     public Mono<Void> setArtistFlag(String userId, String channelId, boolean isArtist) {
         return cachedChannelRepository
                 .findFirstByUserIdAndChannelId(userId, channelId)
@@ -121,6 +136,9 @@ public class ChannelCacheService {
                 .then();
     }
 
+    /**
+     * アーティストフラグを id（subscriptionId）または channelId 指定で更新します。
+     */
     public Mono<Void> setArtistFlagById(String userId, String idOrChannelId, boolean isArtist) {
         return cachedChannelRepository
                 .findById(idOrChannelId)
@@ -135,10 +153,16 @@ public class ChannelCacheService {
                 .then();
     }
 
+    /**
+     * 登録アーティストの新着（最新動画）一覧を取得します（アクセストークンなしの最小互換）。
+     */
     public Mono<List<CachedChannelEntry>> listNewReleases(String userId) {
         return listNewReleases(userId, null);
     }
 
+    /**
+     * 登録アーティストの新着（最新動画）一覧を取得します。
+     */
     public Mono<List<CachedChannelEntry>> listNewReleases(String userId, String accessToken) {
         Flux<CachedChannelEntry> flux = cachedChannelRepository
                 .findByUserIdAndLatestVideoIdNotNullAndLatestVideoPublishedAtNotNullOrderByLatestVideoPublishedAtDesc(userId)

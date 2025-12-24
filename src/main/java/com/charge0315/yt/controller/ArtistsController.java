@@ -36,6 +36,9 @@ public class ArtistsController {
         this.channelCacheService = channelCacheService;
     }
 
+    /**
+     * 登録済みアーティスト一覧を返します。
+     */
     @GetMapping
     Mono<List<Map<String, Object>>> list(WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -44,6 +47,9 @@ public class ArtistsController {
                 .map(items -> items.stream().map(ArtistsController::toArtistResponse).toList());
     }
 
+    /**
+     * 指定チャンネルをアーティストとして登録します。
+     */
     @PostMapping
     Mono<Map<String, Object>> markAsArtist(@RequestBody MarkArtistRequest body, WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -55,6 +61,9 @@ public class ArtistsController {
                 .thenReturn(Map.of("ok", true));
     }
 
+    /**
+     * アーティスト登録を解除します。
+     */
     @DeleteMapping("/{id}")
     Mono<Map<String, Object>> unmarkAsArtist(@PathVariable("id") String id, WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -66,6 +75,9 @@ public class ArtistsController {
                 .thenReturn(Map.of("ok", true));
     }
 
+    /**
+     * 登録アーティストの新着（最新動画）一覧を返します。
+     */
     @GetMapping("/new-releases")
     Mono<List<Map<String, Object>>> newReleases(WebSession session) {
         String userId = SessionAuth.requireUserId(session);

@@ -41,6 +41,9 @@ public class YoutubeController {
         this.youTubeDataApiService = youTubeDataApiService;
     }
 
+    /**
+     * YouTubeの再生リスト一覧を返します。
+     */
     @GetMapping("/playlists")
     Mono<Map<String, Object>> playlists(
             @RequestParam(name = "pageToken", required = false) String pageToken,
@@ -57,6 +60,9 @@ public class YoutubeController {
     public record CreatePlaylistRequest(String name, String description, String privacy) {
     }
 
+    /**
+     * YouTubeに再生リストを作成します。
+     */
     @PostMapping("/playlists")
     Mono<Object> createPlaylist(@RequestBody Mono<CreatePlaylistRequest> body, WebSession session) {
         SessionAuth.requireUserId(session);
@@ -72,6 +78,9 @@ public class YoutubeController {
     public record UpdatePlaylistRequest(String name, String description, String privacy) {
     }
 
+    /**
+     * YouTube上の再生リスト情報を更新します。
+     */
     @PutMapping("/playlists/{id}")
     Mono<Object> updatePlaylist(
             @PathVariable("id") String playlistId,
@@ -87,6 +96,9 @@ public class YoutubeController {
                 req != null ? req.privacy() : null));
     }
 
+    /**
+     * YouTube上の再生リストを削除します。
+     */
     @org.springframework.web.bind.annotation.DeleteMapping("/playlists/{id}")
     Mono<ResponseEntity<Void>> deletePlaylist(@PathVariable("id") String playlistId, WebSession session) {
         SessionAuth.requireUserId(session);
@@ -96,6 +108,9 @@ public class YoutubeController {
                 .thenReturn(ResponseEntity.noContent().build());
     }
 
+    /**
+     * 指定した再生リストの動画アイテム一覧を返します。
+     */
     @GetMapping("/playlists/{id}/items")
     Mono<List<YouTubeDataApiService.PlaylistVideo>> playlistItems(
             @PathVariable("id") String playlistId,
@@ -108,6 +123,9 @@ public class YoutubeController {
     public record AddVideoRequest(String videoId) {
     }
 
+    /**
+     * 指定した再生リストへ動画を追加します。
+     */
     @PostMapping("/playlists/{id}/videos")
     Mono<ResponseEntity<Void>> addVideo(
             @PathVariable("id") String playlistId,
@@ -125,6 +143,9 @@ public class YoutubeController {
                 .thenReturn(ResponseEntity.noContent().build());
     }
 
+    /**
+     * 指定した再生リストから動画を削除します。
+     */
     @org.springframework.web.bind.annotation.DeleteMapping("/playlists/{id}/videos/{videoId}")
     Mono<ResponseEntity<Void>> removeVideo(
             @PathVariable("id") String playlistId,
@@ -137,6 +158,9 @@ public class YoutubeController {
                 .thenReturn(ResponseEntity.noContent().build());
     }
 
+    /**
+     * YouTube動画検索を行い、フロント互換の検索結果配列を返します。
+     */
     @GetMapping("/search")
     Mono<List<YouTubeDataApiService.VideoSearchResult>> search(
             @RequestParam(name = "query", required = false) String query,

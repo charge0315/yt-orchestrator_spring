@@ -47,6 +47,9 @@ public class YoutubeRecommendationsController {
             String reason) {
     }
 
+    /**
+     * おすすめチャンネル候補を返します（おすすめ→検索→チャンネル詳細を解決）。
+     */
     @GetMapping("/channels")
     Mono<List<ChannelRecommendation>> channels(WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -79,6 +82,9 @@ public class YoutubeRecommendationsController {
             .collectList();
     }
 
+    /**
+     * 登録チャンネルの最新動画一覧を返します。
+     */
     @GetMapping("/videos")
     Mono<List<YouTubeChannelsService.LatestVideo>> videos(WebSession session) {
         String userId = SessionAuth.requireUserId(session);

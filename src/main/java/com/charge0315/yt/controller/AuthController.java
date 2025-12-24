@@ -41,12 +41,18 @@ public class AuthController {
         this.googleOAuthService = googleOAuthService;
     }
 
+    /**
+     * ログアウトします（セッション無効化）。
+     */
     @PostMapping("/logout")
     Mono<Map<String, Object>> logout(WebSession session) {
         return session.invalidate()
                 .thenReturn(Map.of("message", "ログアウトしました"));
     }
 
+    /**
+     * 現在ログイン中のユーザー情報を返します。
+     */
     @GetMapping("/me")
     Mono<Map<String, Object>> me(WebSession session) {
         String userId = session.getAttribute("userId");
@@ -87,6 +93,9 @@ public class AuthController {
         return Mono.just(Map.of("user", user));
     }
 
+    /**
+     * Google OAuth の認可フローを開始します（認可URLへリダイレクト）。
+     */
     @GetMapping("/google")
     Mono<ResponseEntity<Void>> googleOAuthStart(ServerWebExchange exchange) {
         try {
@@ -99,6 +108,9 @@ public class AuthController {
         }
     }
 
+    /**
+     * Google OAuth のコールバックを処理し、トークン/ユーザー情報をセッションに保存してフロントへ戻します。
+     */
     @GetMapping("/google/callback")
     Mono<ResponseEntity<Void>> googleOAuthCallback(
             @RequestParam(name = "code", required = false) String code,

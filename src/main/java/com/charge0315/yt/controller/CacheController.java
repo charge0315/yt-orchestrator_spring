@@ -29,6 +29,9 @@ public class CacheController {
         this.cacheRefreshService = cacheRefreshService;
     }
 
+    /**
+     * 登録済みチャンネルのキャッシュを更新します。
+     */
     @PostMapping("/refresh")
     Mono<ResponseEntity<Map<String, Object>>> refresh(WebSession session) {
         String userId = SessionAuth.requireUserId(session);

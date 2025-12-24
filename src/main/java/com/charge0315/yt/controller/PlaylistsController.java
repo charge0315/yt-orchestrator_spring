@@ -40,6 +40,9 @@ public class PlaylistsController {
         this.youTubeDataApiService = youTubeDataApiService;
     }
 
+    /**
+     * 再生リスト一覧を返します。
+     */
     @GetMapping
     Mono<Map<String, Object>> list(WebSession session) {
         SessionAuth.requireUserId(session);
@@ -52,10 +55,7 @@ public class PlaylistsController {
     }
 
     /**
-     * Frontend 互換: `GET /api/playlists/{id}`
-     *
-     * フロントの PlaylistDetailPage は `/api/playlists/:id` を叩いて `name` / `songs[]` を表示する。
-     * 現状の Spring は export/import 用だったため、YouTube Data API を使って詳細を返す。
+     * 指定した再生リストの詳細（name/songs 等）をフロント互換の形で返します。
      */
     @GetMapping("/{id}")
     Mono<ResponseEntity<Map<String, Object>>> detail(@PathVariable("id") String id, WebSession session) {
@@ -108,7 +108,7 @@ public class PlaylistsController {
     }
 
     /**
-     * Frontend 互換: `POST /api/playlists/{id}/songs`
+     * 指定した再生リストへ曲（videoId）を追加します。
      */
     @PostMapping("/{id}/songs")
     Mono<Map<String, Object>> addSong(
@@ -130,7 +130,7 @@ public class PlaylistsController {
     }
 
     /**
-     * Frontend 互換: `DELETE /api/playlists/{id}/songs/{videoId}`
+     * 指定した再生リストから曲（videoId）を削除します。
      */
     @DeleteMapping("/{id}/songs/{videoId}")
     Mono<Map<String, Object>> removeSong(
@@ -150,6 +150,9 @@ public class PlaylistsController {
             .thenReturn(Map.of("ok", true));
     }
 
+    /**
+     * 再生リストをJSONとしてエクスポートします。
+     */
     @GetMapping("/{id}/export")
     Mono<ResponseEntity<Map<String, Object>>> export(@PathVariable("id") String id, WebSession session) {
         SessionAuth.requireUserId(session);
@@ -198,6 +201,9 @@ public class PlaylistsController {
             List<String> videoIds) {
     }
 
+    /**
+     * JSONから再生リストをインポート（作成/追加）します。
+     */
     @PostMapping("/import")
     Mono<Map<String, Object>> importPlaylist(@RequestBody Mono<ImportRequest> body, WebSession session) {
         SessionAuth.requireUserId(session);

@@ -40,6 +40,9 @@ public class YoutubeAuthController {
         this.googleOAuthService = googleOAuthService;
     }
 
+    /**
+     * YouTube連携用の認可URLを返します。
+     */
     @GetMapping("/url")
     Mono<Map<String, Object>> getAuthUrl(ServerWebExchange exchange) {
         return Mono.fromSupplier(() -> googleOAuthService.buildAuthorizationUri(exchange))
@@ -49,6 +52,9 @@ public class YoutubeAuthController {
     public record CallbackRequest(String code) {
     }
 
+    /**
+     * 認可コードをトークンへ交換し、セッションへ保存します。
+     */
     @PostMapping("/callback")
     Mono<Map<String, Object>> callback(
             @RequestBody Mono<CallbackRequest> body,
@@ -77,6 +83,9 @@ public class YoutubeAuthController {
         });
     }
 
+    /**
+     * YouTube連携状態（connected）を返します。
+     */
     @GetMapping("/status")
     Mono<Map<String, Object>> status(WebSession session) {
         String accessToken = session.getAttribute("youtubeAccessToken");

@@ -36,6 +36,9 @@ public class ChannelsController {
         this.channelCacheService = channelCacheService;
     }
 
+    /**
+     * 登録済みチャンネル一覧を返します。
+     */
     @GetMapping
     Mono<List<Map<String, Object>>> list(WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -44,6 +47,9 @@ public class ChannelsController {
                 .map(items -> items.stream().map(ChannelsController::toChannelResponse).toList());
     }
 
+    /**
+     * チャンネルを登録（購読）します。
+     */
     @PostMapping
     Mono<Map<String, Object>> subscribe(@RequestBody SubscribeRequest body, WebSession session) {
         String userId = SessionAuth.requireUserId(session);
@@ -56,6 +62,9 @@ public class ChannelsController {
                 .map(ChannelsController::toChannelResponse);
     }
 
+    /**
+     * 登録済みチャンネルを解除します。
+     */
     @DeleteMapping("/{id}")
     Mono<Map<String, Object>> unsubscribe(@PathVariable("id") String id, WebSession session) {
         String userId = SessionAuth.requireUserId(session);
