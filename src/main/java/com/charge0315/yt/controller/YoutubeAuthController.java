@@ -18,12 +18,17 @@ import com.charge0315.yt.service.GoogleOAuthService;
 import reactor.core.publisher.Mono;
 
 /**
- * Frontend 互換の YouTube OAuth API.
+ * YouTube OAuth（フロント互換）に関するエンドポイント。
  *
- * フロントは `GET /api/youtube/auth/url` → 認可URL取得、
- * `POST /api/youtube/auth/callback` → code交換、
- * `GET /api/youtube/auth/status` → 接続状態
- * を呼ぶが、Spring側の実体は Google OAuth（/api/auth/google + callback）に寄せて実装する。
+ * <p>フロント互換のため、以下のAPIを提供します。</p>
+ * <ul>
+ *   <li>{@code GET /api/youtube/auth/url} - 認可URLの取得</li>
+ *   <li>{@code POST /api/youtube/auth/callback} - code をトークンへ交換し、セッションへ保存</li>
+ *   <li>{@code GET /api/youtube/auth/status} - 接続状態（有効期限を含む）</li>
+ * </ul>
+ *
+ * <p>内部実装は {@link GoogleOAuthService} に寄せており、
+ * 取得したアクセストークン/リフレッシュトークン等を {@link WebSession} に保存します。</p>
  */
 @RestController
 @RequestMapping("/api/youtube/auth")

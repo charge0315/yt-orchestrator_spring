@@ -21,8 +21,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 /**
- * Node 版の recommendations.ts の「クォータ消費ゼロのフォールバック」相当。
- * OpenAI は使わず、登録チャンネルの傾向から検索クエリを提案する。
+ * おすすめ（レコメンド）生成サービス。
+ *
+ * <p>登録済みチャンネルの傾向から、未登録の可能性が高い検索キーワード/チャンネル候補を提案します。</p>
+ * <ul>
+ *   <li>{@code OPENAI_API_KEY} が設定されている場合は OpenAI を用いた提案を試みます</li>
+ *   <li>失敗時や未設定時は、クォータ消費ゼロのフォールバック（ルールベース）で生成します</li>
+ * </ul>
  */
 @Service
 public class RecommendationsService {

@@ -16,7 +16,11 @@ import com.charge0315.yt.mongo.CachedChannelRepository;
 import reactor.core.publisher.Mono;
 
 /**
- * フロントの youtubeChannelsApi が期待する形を返す。
+ * YouTubeチャンネル管理（フロント互換）用サービス。
+ *
+ * <p>MongoDB の {@link CachedChannel} を基点に、フロントのチャンネル一覧/購読操作が
+ * 期待する形へ整形して返します。必要に応じて YouTube Data API を呼び、
+ * 最新動画情報などを補完します。</p>
  */
 @Service
 public class YouTubeChannelsService {
