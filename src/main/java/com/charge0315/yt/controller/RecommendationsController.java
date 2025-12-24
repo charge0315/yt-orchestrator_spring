@@ -12,6 +12,12 @@ import com.charge0315.yt.service.RecommendationsService;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * おすすめ（レコメンド）取得API。
+ *
+ * <p>フロントの {@code /api/recommendations} 互換のため、
+ * ユーザーの登録チャンネル/アーティストに基づくおすすめリストを返します。</p>
+ */
 @RestController
 @RequestMapping("/api/recommendations")
 public class RecommendationsController {

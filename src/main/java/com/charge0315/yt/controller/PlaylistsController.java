@@ -24,6 +24,12 @@ import com.charge0315.yt.service.YouTubeDataApiService;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * プレイリスト（主に YouTube 側）に関するAPI。
+ *
+ * <p>エクスポート/インポートに加えて、フロント互換の
+ * {@code /api/playlists/{id}}（name/songs 返却）や曲追加/削除を提供します。</p>
+ */
 @RestController
 @RequestMapping("/api/playlists")
 public class PlaylistsController {

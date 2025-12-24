@@ -14,6 +14,12 @@ import com.charge0315.yt.mongo.CachedChannelRepository;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
 
+/**
+ * チャンネル/アーティストの登録情報を MongoDB にキャッシュし、一覧や新着（最新動画）を提供するサービス。
+ *
+ * <p>登録時は YouTube Data API からチャンネル詳細と最新動画を取得し、
+ * 表示に必要な情報（サムネイル、最新動画タイトル/尺/再生回数など）を保存します。</p>
+ */
 @Service
 public class ChannelCacheService {
 

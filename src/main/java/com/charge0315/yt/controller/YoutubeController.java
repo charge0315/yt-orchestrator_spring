@@ -23,6 +23,12 @@ import com.charge0315.yt.service.YouTubeDataApiService;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * YouTube Data API v3 のプロキシ（フロント互換）を提供するコントローラ。
+ *
+ * <p>主に再生リスト操作と検索を扱います。検索はフロントの利用形に合わせて
+ * {@code channel:<channelId>} の特殊クエリを補完します。</p>
+ */
 @RestController
 @RequestMapping("/api/youtube")
 public class YoutubeController {

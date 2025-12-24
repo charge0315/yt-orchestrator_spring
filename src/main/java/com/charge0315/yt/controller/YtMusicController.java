@@ -19,6 +19,12 @@ import com.charge0315.yt.service.YouTubeDataApiService;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * YouTube Music 互換API（最小実装）。
+ *
+ * <p>Node版ではYouTube Music用のキャッシュ等が存在しますが、Spring版では
+ * まず YouTube Data API を直接参照して互換のレスポンス形を返します。</p>
+ */
 @RestController
 @RequestMapping("/api/ytmusic")
 public class YtMusicController {

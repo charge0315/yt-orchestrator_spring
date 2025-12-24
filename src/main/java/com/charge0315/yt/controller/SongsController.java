@@ -17,6 +17,12 @@ import com.charge0315.yt.util.SessionAuth;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * 曲/動画検索API。
+ *
+ * <p>フロントの検索 UI から利用される {@code /api/songs/search} を提供します。
+ * 実装は YouTube Data API の検索をプロキシし、フロント互換の配列形式で返します。</p>
+ */
 @RestController
 @RequestMapping("/api/songs")
 public class SongsController {

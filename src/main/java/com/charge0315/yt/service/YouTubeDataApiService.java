@@ -17,6 +17,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * YouTube Data API v3 へのアクセスをまとめたサービス。
+ *
+ * <p>再生リスト/動画検索/チャンネル情報取得などのAPI呼び出しを行い、
+ * フロントが扱いやすい形へ必要に応じて整形します。</p>
+ */
 @Service
 public class YouTubeDataApiService {
 

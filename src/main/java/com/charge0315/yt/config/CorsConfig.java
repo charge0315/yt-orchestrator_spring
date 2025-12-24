@@ -10,6 +10,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
+/**
+ * CORS 設定。
+ *
+ * <p>Cookieセッション（credentials）を利用するため、
+ * {@code allowCredentials=true} とし、開発環境のOriginを許可します。</p>
+ */
 @Configuration
 public class CorsConfig {
 

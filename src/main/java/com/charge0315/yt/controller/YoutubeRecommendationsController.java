@@ -15,6 +15,12 @@ import com.charge0315.yt.util.SessionAuth;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * YouTube関連のおすすめAPI（フロント互換）。
+ *
+ * <p>AIおすすめ結果（検索キーワード）を元に、YouTubeのチャンネル候補や
+ * 登録チャンネルの最新動画リストを返します。</p>
+ */
 @RestController
 @RequestMapping("/api/youtube/recommendations")
 public class YoutubeRecommendationsController {

@@ -4,6 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.WebSession;
 
+/**
+ * WebSession（Cookieセッション）から認証情報を取得するヘルパー。
+ *
+ * <p>このプロジェクトはフロントからの {@code withCredentials: true} を前提に、
+ * セッション属性（例: {@code userId}, {@code youtubeAccessToken}）で認証状態を管理します。</p>
+ */
 public final class SessionAuth {
 
     private SessionAuth() {

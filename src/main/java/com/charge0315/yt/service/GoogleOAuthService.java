@@ -25,6 +25,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * Google OAuth の実装（認可URL生成、トークン交換、ユーザー情報取得）。
+ *
+ * <p>YouTube Data API v3 操作に必要なスコープを含め、
+ * 取得したアクセストークン/リフレッシュトークンをセッションへ保存する前提で利用します。</p>
+ */
 @Service
 public class GoogleOAuthService {
 

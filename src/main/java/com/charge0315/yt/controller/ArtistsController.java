@@ -20,6 +20,12 @@ import com.charge0315.yt.util.SessionAuth;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * アーティスト（= チャンネル）管理API。
+ *
+ * <p>MongoDB のキャッシュ（登録済みチャンネル情報）を元に、
+ * アーティストとしての登録/解除や最新動画（新着）を提供します。</p>
+ */
 @RestController
 @RequestMapping("/api/artists")
 public class ArtistsController {

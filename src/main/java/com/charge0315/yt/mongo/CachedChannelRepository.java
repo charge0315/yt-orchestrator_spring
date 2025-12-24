@@ -7,6 +7,11 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * {@link CachedChannel} を操作するReactive MongoDBリポジトリ。
+ *
+ * <p>ユーザーIDや artist フラグでの検索、購読解除（削除）などを提供します。</p>
+ */
 public interface CachedChannelRepository extends ReactiveMongoRepository<CachedChannel, String> {
 
     Mono<CachedChannel> findFirstByUserIdAndChannelId(String userId, String channelId);

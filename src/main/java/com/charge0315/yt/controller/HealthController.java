@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * ヘルスチェック用エンドポイント。
+ *
+ * <p>ロードバランサや疎通確認用途で利用します。</p>
+ */
 @RestController
 public class HealthController {
 

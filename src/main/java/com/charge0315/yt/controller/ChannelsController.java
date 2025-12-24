@@ -20,6 +20,12 @@ import com.charge0315.yt.util.SessionAuth;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * チャンネル登録API。
+ *
+ * <p>フロントのチャンネル管理画面から利用され、登録/解除と登録済み一覧を提供します。
+ * 登録データは MongoDB にキャッシュします。</p>
+ */
 @RestController
 @RequestMapping("/api/channels")
 public class ChannelsController {

@@ -12,6 +12,12 @@ import com.charge0315.yt.mongo.CachedChannelRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * MongoDB に保存されているチャンネルキャッシュを更新するサービス。
+ *
+ * <p>{@code /api/cache/refresh} から呼ばれ、登録済みチャンネルの
+ * チャンネル詳細・最新動画情報を順次更新します。</p>
+ */
 @Service
 public class CacheRefreshService {
 

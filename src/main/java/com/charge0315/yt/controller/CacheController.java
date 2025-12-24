@@ -14,6 +14,11 @@ import com.charge0315.yt.service.CacheRefreshService;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * キャッシュ操作API。
+ *
+ * <p>MongoDB に保存しているチャンネルキャッシュを、YouTube Data API を用いて更新します。</p>
+ */
 @RestController
 @RequestMapping("/api/cache")
 public class CacheController {

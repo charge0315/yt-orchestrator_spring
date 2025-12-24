@@ -5,6 +5,11 @@ import java.time.Instant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * 登録チャンネル/アーティストのキャッシュドキュメント。
+ *
+ * <p>ユーザーごとの登録状態と、表示に必要なチャンネル情報・最新動画情報を保存します。</p>
+ */
 @Document("cached_channels")
 public class CachedChannel {
 

@@ -20,6 +20,17 @@ import com.charge0315.yt.service.GoogleOAuthService;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * 認証（Google OAuth）に関するエンドポイント。
+ *
+ * <p>主に以下を提供します。</p>
+ * <ul>
+ *   <li>{@code GET /api/auth/google} - Google OAuth 開始（リダイレクト）</li>
+ *   <li>{@code GET /api/auth/google/callback} - OAuth コールバック</li>
+ *   <li>{@code GET /api/auth/me} - 現在ログイン中のユーザー情報</li>
+ *   <li>{@code POST /api/auth/logout} - ログアウト</li>
+ * </ul>
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

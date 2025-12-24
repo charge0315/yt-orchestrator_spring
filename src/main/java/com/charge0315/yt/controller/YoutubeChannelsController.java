@@ -18,6 +18,12 @@ import com.charge0315.yt.util.SessionAuth;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * YouTubeチャンネル管理API（フロント互換）。
+ *
+ * <p>フロントの {@code youtubeChannelsApi} が利用する
+ * {@code /api/youtube/channels} 一式を提供します。</p>
+ */
 @RestController
 @RequestMapping("/api/youtube/channels")
 public class YoutubeChannelsController {
