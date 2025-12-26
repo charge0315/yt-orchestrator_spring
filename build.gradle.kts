@@ -27,6 +27,32 @@ repositories {
     mavenCentral()
 }
 
+val frontendDir = file("src/main/frontend")
+
+val npmCommand = if (System.getProperty("os.name").lowercase().contains("win")) {
+    "npm.cmd"
+} else {
+    "npm"
+}
+
+val frontendNpmInstall = tasks.register<Exec>("frontendNpmInstall") {
+    workingDir = frontendDir
+    commandLine(npmCommand, "install")
+}
+
+val frontendBuild = tasks.register<Exec>("frontendBuild") {
+    dependsOn(frontendNpmInstall)
+    workingDir = frontendDir
+    commandLine(npmCommand, "run", "build")
+}
+
+tasks.named<ProcessResources>("processResources") {
+    dependsOn(frontendBuild)
+    from(frontendDir.resolve("dist")) {
+        into("static")
+    }
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }

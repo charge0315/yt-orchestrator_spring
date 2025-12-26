@@ -1,6 +1,6 @@
 # Frontend API gap analysis (frontend client.ts 기준)
 
-このドキュメントは、Node 版フロント（`yt-orchestrator/packages/frontend/src/api/client.ts`）が期待している API と、
+このドキュメントは、フロント（`yt-orchestrator_spring/src/main/frontend/src/api/client.ts`）が期待している API と、
 - Node backend（`yt-orchestrator/packages/backend`）
 - Spring WebFlux backend（`yt-orchestrator_spring`）
 の実装状況を突き合わせた差分表です。

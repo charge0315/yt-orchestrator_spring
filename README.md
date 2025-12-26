@@ -1,7 +1,9 @@
 # yt-orchestrator_spring
 
 Spring Boot (WebFlux) + Reactive MongoDB で実装した YouTube Orchestrator のバックエンドです。
-フロントエンド（別リポジトリ/別フォルダ）から `VITE_API_URL` を通して利用する想定で、互換APIを提供します。
+
+このリポジトリには、`yt-orchestrator` の React/Vite フロントエンドを同梱しており、Spring WebFlux から SPA として配信します。
+（フロントは `src/main/frontend/` に配置されています）
 
 ## 主な機能
 
@@ -15,6 +17,7 @@ Spring Boot (WebFlux) + Reactive MongoDB で実装した YouTube Orchestrator �
 
 - Java 21
 - MongoDB（クラウド推奨）
+- Node.js（フロント同梱ビルド用。`./gradlew` 実行時に `src/main/frontend` の `npm install/build` を実行します）
 
 ## 環境変数
 
@@ -38,10 +41,26 @@ Google OAuth / YouTube OAuth で必要な値は `src/main/resources/application.
 ./gradlew bootRun
 ```
 
+起動後:
+
+- UI: <http://localhost:8080/>
+- API: <http://localhost:8080/api>
+
+
 またはテスト:
 
 ```bash
 ./gradlew test
+```
+
+## フロント開発（任意）
+
+フロント単体で Vite dev server を起動し、`/api` を Spring(8080) にプロキシします。
+
+```bash
+cd src/main/frontend
+npm install
+npm run dev
 ```
 
 ## API概要

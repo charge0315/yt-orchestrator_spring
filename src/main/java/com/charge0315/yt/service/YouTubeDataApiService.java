@@ -34,6 +34,9 @@ public class YouTubeDataApiService {
                 .build();
     }
 
+    /**
+     * 動画を検索し、フロントで扱いやすい検索結果（duration/publishedAt 等を含む）を返します。
+     */
     public Mono<List<VideoSearchResult>> searchVideos(String accessToken, String query, int maxResults) {
         return webClient
                 .get()
@@ -90,6 +93,9 @@ public class YouTubeDataApiService {
                 });
     }
 
+    /**
+     * チャンネルを検索し、候補一覧を返します。
+     */
     public Mono<List<ChannelSearchResult>> searchChannels(String accessToken, String query, int maxResults) {
         return webClient
                 .get()
@@ -129,6 +135,9 @@ public class YouTubeDataApiService {
                 });
     }
 
+    /**
+     * チャンネル詳細（タイトル/説明/サムネイル/登録者数）を取得します。
+     */
     public Mono<ChannelDetails> getChannelDetails(String accessToken, String channelId) {
         return webClient
                 .get()
@@ -164,6 +173,9 @@ public class YouTubeDataApiService {
                 });
     }
 
+    /**
+     * 指定チャンネルの最新動画（1件）を取得します。
+     */
     public Mono<LatestVideo> fetchLatestVideoForChannel(String accessToken, String channelId) {
         return webClient
                 .get()
@@ -199,6 +211,9 @@ public class YouTubeDataApiService {
                 });
     }
 
+    /**
+     * 動画詳細（duration/viewCount）を取得します。
+     */
     public Mono<VideoDetails> getVideoDetails(String accessToken, String videoId) {
         if (!StringUtils.hasText(videoId)) {
             return Mono.empty();
@@ -230,6 +245,9 @@ public class YouTubeDataApiService {
                 });
     }
 
+    /**
+     * 自分の再生リスト一覧を取得します（nextPageToken を含む）。
+     */
     public Mono<PlaylistsResponse> listPlaylists(String accessToken, String pageToken) {
         return webClient
                 .get()
@@ -260,6 +278,9 @@ public class YouTubeDataApiService {
                 });
     }
 
+    /**
+     * 指定した再生リストのメタ情報（snippet 等）を取得します。
+     */
     public Mono<JsonNode> getPlaylist(String accessToken, String playlistId) {
         return webClient
                 .get()
@@ -293,6 +314,9 @@ public class YouTubeDataApiService {
         public record VideoDetails(String duration, Long viewCount) {
         }
 
+    /**
+     * YouTube上に再生リストを作成します。
+     */
     public Mono<JsonNode> createPlaylist(String accessToken, String name, String description, String privacyStatus) {
         Map<String, Object> snippet = new HashMap<>();
         snippet.put("title", name);
@@ -321,6 +345,9 @@ public class YouTubeDataApiService {
                 .bodyToMono(JsonNode.class);
     }
 
+    /**
+     * YouTube上の再生リスト情報を更新します。
+     */
     public Mono<JsonNode> updatePlaylist(String accessToken, String playlistId, String name, String description, String privacyStatus) {
         Map<String, Object> snippet = new HashMap<>();
         if (StringUtils.hasText(name)) {
@@ -353,6 +380,9 @@ public class YouTubeDataApiService {
                 .bodyToMono(JsonNode.class);
     }
 
+    /**
+     * YouTube上の再生リストを削除します。
+     */
     public Mono<Void> deletePlaylist(String accessToken, String playlistId) {
         return webClient
                 .delete()
@@ -366,6 +396,9 @@ public class YouTubeDataApiService {
                 .bodyToMono(Void.class);
     }
 
+    /**
+     * 指定した再生リストの動画アイテム一覧を取得します（duration を補完）。
+     */
     public Mono<List<PlaylistVideo>> listPlaylistItems(String accessToken, String playlistId) {
         return webClient
                 .get()
@@ -426,6 +459,9 @@ public class YouTubeDataApiService {
                 });
     }
 
+    /**
+     * 指定した再生リストへ動画を追加します。
+     */
     public Mono<Void> addVideoToPlaylist(String accessToken, String playlistId, String videoId) {
         Map<String, Object> body = Map.of(
                 "snippet", Map.of(
@@ -449,6 +485,9 @@ public class YouTubeDataApiService {
                 .then();
     }
 
+    /**
+     * 指定した再生リストから動画を削除します。
+     */
     public Mono<Void> removeVideoFromPlaylist(String accessToken, String playlistId, String videoId) {
         // playlistItemId が必要なので、playlistItems から videoId に一致するものを探して削除
         return webClient
@@ -527,6 +566,9 @@ public class YouTubeDataApiService {
                 });
     }
 
+        /**
+         * 動画検索結果（フロント互換）。
+         */
         public record VideoSearchResult(
             String videoId,
             String title,
@@ -537,12 +579,21 @@ public class YouTubeDataApiService {
                 String publishedAt) {
     }
 
+    /**
+     * チャンネル検索結果（フロント互換）。
+     */
     public record ChannelSearchResult(String channelId, String title, String description, String thumbnailUrl) {
     }
 
+    /**
+     * 再生リスト一覧レスポンス（items と nextPageToken）。
+     */
     public record PlaylistsResponse(List<Object> items, String nextPageToken) {
     }
 
+    /**
+     * 再生リスト内の動画アイテム（フロント互換）。
+     */
     public record PlaylistVideo(
             String videoId,
             String title,
